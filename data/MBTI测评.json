@@ -1,0 +1,390 @@
+{
+  "mbtiAssessment": {
+    "title": "MBTI人格测评",
+    "description": "MBTI（Myers-Briggs Type Indicator）是一种自我报告式的人格测评工具，用于衡量和描述人们在获取信息、做出决策、对待生活等方面的心理活动规律和人格类型。",
+    "dimensions": [
+      {
+        "name": "精力来源",
+        "code": "EI",
+        "options": ["外向(E)", "内向(I)"]
+      },
+      {
+        "name": "信息获取方式",
+        "code": "SN",
+        "options": ["感觉(S)", "直觉(N)"]
+      },
+      {
+        "name": "决策方式",
+        "code": "TF",
+        "options": ["思考(T)", "情感(F)"]
+      },
+      {
+        "name": "生活方式",
+        "code": "JP",
+        "options": ["判断(J)", "知觉(P)"]
+      }
+    ],
+    "questions": [
+      {
+        "id": "1",
+        "dimension": "EI",
+        "category": "精力来源",
+        "question": "当你结束一整天的工作/学习后，你更可能：",
+        "options": [
+          {
+            "id": "A",
+            "text": "想找人聊聊，分享一天的经历",
+            "score": "E"
+          },
+          {
+            "id": "B",
+            "text": "想一个人安静待着，恢复精力",
+            "score": "I"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "dimension": "EI",
+        "category": "精力来源",
+        "question": "在团队讨论中，你通常：",
+        "options": [
+          {
+            "id": "A",
+            "text": "边想边说，越说越清楚",
+            "score": "E"
+          },
+          {
+            "id": "B",
+            "text": "想清楚再说，不轻易开口",
+            "score": "I"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "dimension": "EI",
+        "category": "精力来源",
+        "question": "周末你更理想的安排是：",
+        "options": [
+          {
+            "id": "A",
+            "text": "和朋友聚会或参加活动",
+            "score": "E"
+          },
+          {
+            "id": "B",
+            "text": "独处、看书、做自己的事",
+            "score": "I"
+          }
+        ]
+      },
+      {
+        "id": "4",
+        "dimension": "EI",
+        "category": "精力来源",
+        "question": "面对陌生环境或新人，你通常：",
+        "options": [
+          {
+            "id": "A",
+            "text": "很快进入状态，主动交流",
+            "score": "E"
+          },
+          {
+            "id": "B",
+            "text": "先观察一段时间再参与",
+            "score": "I"
+          }
+        ]
+      },
+      {
+        "id": "5",
+        "dimension": "EI",
+        "category": "精力来源",
+        "question": "以下哪种更符合你？",
+        "options": [
+          {
+            "id": "A",
+            "text": "表达会让我更有能量",
+            "score": "E"
+          },
+          {
+            "id": "B",
+            "text": "安静会让我更有能量",
+            "score": "I"
+          }
+        ]
+      },
+      {
+        "id": "6",
+        "dimension": "SN",
+        "category": "信息获取方式",
+        "question": "当你学习一项新内容时，你更关注：",
+        "options": [
+          {
+            "id": "A",
+            "text": "具体步骤、实例和细节",
+            "score": "S"
+          },
+          {
+            "id": "B",
+            "text": "整体逻辑、趋势和可能性",
+            "score": "N"
+          }
+        ]
+      },
+      {
+        "id": "7",
+        "dimension": "SN",
+        "category": "信息获取方式",
+        "question": "阅读一篇文章时，你更容易记住：",
+        "options": [
+          {
+            "id": "A",
+            "text": "明确的数据和事实",
+            "score": "S"
+          },
+          {
+            "id": "B",
+            "text": "核心观点和启发",
+            "score": "N"
+          }
+        ]
+      },
+      {
+        "id": "8",
+        "dimension": "SN",
+        "category": "信息获取方式",
+        "question": "当别人讲一个方案时，你更在意：",
+        "options": [
+          {
+            "id": "A",
+            "text": "是否可立即执行",
+            "score": "S"
+          },
+          {
+            "id": "B",
+            "text": "是否有潜在空间和延展性",
+            "score": "N"
+          }
+        ]
+      },
+      {
+        "id": "9",
+        "dimension": "SN",
+        "category": "信息获取方式",
+        "question": "面对问题，你更常：",
+        "options": [
+          {
+            "id": "A",
+            "text": "用过去经验判断",
+            "score": "S"
+          },
+          {
+            "id": "B",
+            "text": "尝试新思路和假设",
+            "score": "N"
+          }
+        ]
+      },
+      {
+        "id": "10",
+        "dimension": "SN",
+        "category": "信息获取方式",
+        "question": "你更容易被哪种内容吸引？",
+        "options": [
+          {
+            "id": "A",
+            "text": "实用技巧、操作指南",
+            "score": "S"
+          },
+          {
+            "id": "B",
+            "text": "概念、趋势、未来可能",
+            "score": "N"
+          }
+        ]
+      },
+      {
+        "id": "11",
+        "dimension": "TF",
+        "category": "决策方式",
+        "question": "当你需要做决定时，你更依赖：",
+        "options": [
+          {
+            "id": "A",
+            "text": "逻辑分析和客观标准",
+            "score": "T"
+          },
+          {
+            "id": "B",
+            "text": "他人感受和价值影响",
+            "score": "F"
+          }
+        ]
+      },
+      {
+        "id": "12",
+        "dimension": "TF",
+        "category": "决策方式",
+        "question": "当同事犯错时，你更可能：",
+        "options": [
+          {
+            "id": "A",
+            "text": "直接指出问题",
+            "score": "T"
+          },
+          {
+            "id": "B",
+            "text": "先考虑对方感受再沟通",
+            "score": "F"
+          }
+        ]
+      },
+      {
+        "id": "13",
+        "dimension": "TF",
+        "category": "决策方式",
+        "question": "以下哪种评价更让你认同？",
+        "options": [
+          {
+            "id": "A",
+            "text": "公正、理性",
+            "score": "T"
+          },
+          {
+            "id": "B",
+            "text": "体贴、有同理心",
+            "score": "F"
+          }
+        ]
+      },
+      {
+        "id": "14",
+        "dimension": "TF",
+        "category": "决策方式",
+        "question": "在冲突中，你更希望：",
+        "options": [
+          {
+            "id": "A",
+            "text": "把问题说清楚",
+            "score": "T"
+          },
+          {
+            "id": "B",
+            "text": "关系不受影响",
+            "score": "F"
+          }
+        ]
+      },
+      {
+        "id": "15",
+        "dimension": "TF",
+        "category": "决策方式",
+        "question": "做选择时，你更难接受：",
+        "options": [
+          {
+            "id": "A",
+            "text": "逻辑不一致",
+            "score": "T"
+          },
+          {
+            "id": "B",
+            "text": "伤害他人感受",
+            "score": "F"
+          }
+        ]
+      },
+      {
+        "id": "16",
+        "dimension": "JP",
+        "category": "生活方式",
+        "question": "面对任务，你更习惯：",
+        "options": [
+          {
+            "id": "A",
+            "text": "提前计划、按部就班",
+            "score": "J"
+          },
+          {
+            "id": "B",
+            "text": "灵活调整、随机应变",
+            "score": "P"
+          }
+        ]
+      },
+      {
+        "id": "17",
+        "dimension": "JP",
+        "category": "生活方式",
+        "question": "当计划被打乱时，你通常：",
+        "options": [
+          {
+            "id": "A",
+            "text": "感到不适，想尽快重回计划",
+            "score": "J"
+          },
+          {
+            "id": "B",
+            "text": "比较适应，顺其自然",
+            "score": "P"
+          }
+        ]
+      },
+      {
+        "id": "18",
+        "dimension": "JP",
+        "category": "生活方式",
+        "question": "你更偏好：",
+        "options": [
+          {
+            "id": "A",
+            "text": "明确截止时间",
+            "score": "J"
+          },
+          {
+            "id": "B",
+            "text": "保留更多选择空间",
+            "score": "P"
+          }
+        ]
+      },
+      {
+        "id": "19",
+        "dimension": "JP",
+        "category": "生活方式",
+        "question": "以下哪种描述更像你？",
+        "options": [
+          {
+            "id": "A",
+            "text": "喜欢\"把事情定下来\"",
+            "score": "J"
+          },
+          {
+            "id": "B",
+            "text": "喜欢\"保持开放可能性\"",
+            "score": "P"
+          }
+        ]
+      },
+      {
+        "id": "20",
+        "dimension": "JP",
+        "category": "生活方式",
+        "question": "你通常：",
+        "options": [
+          {
+            "id": "A",
+            "text": "做完一件事再开始下一件",
+            "score": "J"
+          },
+          {
+            "id": "B",
+            "text": "多件事同时推进",
+            "score": "P"
+          }
+        ]
+      }
+    ]
+  }
+}

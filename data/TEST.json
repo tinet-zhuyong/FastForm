@@ -1,0 +1,84 @@
+{
+  "mbtiAssessment": {
+    "title": "MBTI人格测评",
+    "description": "MBTI（Myers-Briggs Type Indicator）是一种自我报告式的人格测评工具，用于衡量和描述人们在获取信息、做出决策、对待生活等方面的心理活动规律和人格类型。",
+    "dimensions": [
+      {
+        "name": "精力来源",
+        "code": "EI",
+        "options": ["外向(E)", "内向(I)"]
+      },
+      {
+        "name": "信息获取方式",
+        "code": "SN",
+        "options": ["感觉(S)", "直觉(N)"]
+      },
+      {
+        "name": "决策方式",
+        "code": "TF",
+        "options": ["思考(T)", "情感(F)"]
+      },
+      {
+        "name": "生活方式",
+        "code": "JP",
+        "options": ["判断(J)", "知觉(P)"]
+      }
+    ],
+    "questions": [
+      {
+        "id": "1",
+        "dimension": "EI",
+        "category": "精力来源",
+        "question": "当你结束一整天的工作/学习后，你更可能：",
+        "options": [
+          {
+            "id": "A",
+            "text": "想找人聊聊，分享一天的经历",
+            "score": "E"
+          },
+          {
+            "id": "B",
+            "text": "想一个人安静待着，恢复精力",
+            "score": "I"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "dimension": "EI",
+        "category": "精力来源",
+        "question": "在团队讨论中，你通常：",
+        "multioptions": [
+          {
+            "id": "A",
+            "text": "边想边说，越说越清楚",
+            "score": "E"
+          },
+          {
+            "id": "B",
+            "text": "想清楚再说，不轻易开口",
+            "score": "I"
+          }
+        ]
+      },
+      {
+        "id": "20",
+        "dimension": "JP",
+        "category": "生活方式",
+        "question": "你通常：",
+        "options": [
+          {
+            "id": "A",
+            "text": "做完一件事再开始下一件",
+            "score": "J"
+          },
+          {
+            "id": "B",
+            "text": "多件事同时推进",
+            "score": "P"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+.space-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.space-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  font-size: 32px;
+  margin-right: 10px;
+}
+
+.space-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.space-main {
+  max-width: 900px;
+}
