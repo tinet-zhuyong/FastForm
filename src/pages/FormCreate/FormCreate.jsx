@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import returnIcon from '../../assets/return.svg';
+import { API_CONFIG, WEBAPI } from '../../config';
 import './FormCreate.css';
 
 const FormCreate = () => {
   const [jsonInput, setJsonInput] = useState('');
   const [formData, setFormData] = useState(null);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleJsonChange = (e) => {
@@ -27,7 +30,7 @@ const FormCreate = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData) {
@@ -35,11 +38,29 @@ const FormCreate = () => {
       return;
     }
     
-    // 这里可以添加保存表单的逻辑
-    console.log('Form created:', formData);
-    
-    // 提交后返回表单列表
-    navigate('/space');
+    try {
+      setIsLoading(true);
+      setError('');
+      
+      // 调用API保存表单模板
+      const response = await axios.post(WEBAPI.create, formData, {
+        timeout: API_CONFIG.timeout,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      // 保存成功后返回表单列表
+      navigate('/space');
+    } catch (err) {
+      if (err.code === 'ECONNABORTED') {
+        setError('请求超时，请稍后重试');
+      } else {
+        setError(err.message || '保存表单时发生错误');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleBack = () => {
@@ -139,8 +160,8 @@ const FormCreate = () => {
             <button type="button" className="cancel-button" onClick={handleBack}>
               取消
             </button>
-            <button type="submit" className="create-button">
-              创建表单
+            <button type="submit" className="create-button" disabled={isLoading}>
+              {isLoading ? '保存中...' : '创建表单'}
             </button>
           </div>
         </form>

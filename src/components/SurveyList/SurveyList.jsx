@@ -21,6 +21,14 @@ const SurveyList = ({ onNavigateToBuild }) => {
       views: 0,
       status: '草稿',
     },
+    {
+      id: 3,
+      title: '产品功能建议',
+      description: '请分享您对我们产品功能的建议和改进。',
+      responses: 0,
+      views: 0,
+      status: '草稿',
+    },
   ];
 
   return (
@@ -35,7 +43,7 @@ const SurveyList = ({ onNavigateToBuild }) => {
       <div className="survey-list">
         <div className="create-survey-card" onClick={onNavigateToBuild}>
           <div className="create-survey-icon">+</div>
-          <div className="create-survey-title">AI 新建表单</div>
+          <div className="create-survey-title">新建表单</div>
         </div>
         
         {surveys.map((survey) => (
