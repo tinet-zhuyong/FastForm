@@ -1,0 +1,36 @@
+{
+  "survey1": {
+    "title": "测试问卷 - 包含重复ID错误",
+    "description": "此问卷包含重复的问题ID和选项ID，用于测试校验功能",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "您的性别是？",
+        "options": [
+          { "id": "A", "text": "男" },
+          { "id": "B", "text": "女" },
+          { "id": "A", "text": "其他" }
+        ]
+      },
+      {
+        "id": "q1",
+        "question": "您的年龄段是？",
+        "select": [
+          { "id": "A", "text": "18-25岁" },
+          { "id": "B", "text": "26-35岁" },
+          { "id": "B", "text": "36-45岁" }
+        ]
+      },
+      {
+        "id": "q3",
+        "question": "您感兴趣的领域有哪些？",
+        "multioptions": [
+          { "id": "A", "text": "科技" },
+          { "id": "B", "text": "体育" },
+          { "id": "C", "text": "音乐" },
+          { "id": "C", "text": "旅游" }
+        ]
+      }
+    ]
+  }
+}

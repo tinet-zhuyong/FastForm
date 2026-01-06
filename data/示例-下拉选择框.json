@@ -1,0 +1,53 @@
+{
+  "survey1": {
+    "title": "用户信息调查",
+    "description": "请填写您的基本信息",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "您的性别是？",
+        "options": [
+          { "id": "A", "text": "男" },
+          { "id": "B", "text": "女" },
+          { "id": "C", "text": "其他" }
+        ]
+      },
+      {
+        "id": "q2",
+        "question": "您的年龄段是？",
+        "select": [
+          { "id": "A", "text": "18岁以下" },
+          { "id": "B", "text": "18-25岁" },
+          { "id": "C", "text": "26-35岁" },
+          { "id": "D", "text": "36-45岁" },
+          { "id": "E", "text": "46-55岁" },
+          { "id": "F", "text": "56岁以上" }
+        ]
+      },
+      {
+        "id": "q3",
+        "question": "您所在的城市是？",
+        "select": [
+          { "id": "A", "text": "北京" },
+          { "id": "B", "text": "上海" },
+          { "id": "C", "text": "广州" },
+          { "id": "D", "text": "深圳" },
+          { "id": "E", "text": "杭州" },
+          { "id": "F", "text": "成都" },
+          { "id": "G", "text": "其他" }
+        ]
+      },
+      {
+        "id": "q4",
+        "question": "您感兴趣的领域有哪些？（多选）",
+        "multioptions": [
+          { "id": "A", "text": "科技" },
+          { "id": "B", "text": "体育" },
+          { "id": "C", "text": "音乐" },
+          { "id": "D", "text": "旅游" },
+          { "id": "E", "text": "美食" }
+        ]
+      }
+    ]
+  }
+}

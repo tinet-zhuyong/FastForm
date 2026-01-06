@@ -8,6 +8,34 @@
   box-sizing: border-box;
 }
 
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+}
+
+.loading-spinner {
+  font-size: 48px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-state p {
+  color: #657786;
+  font-size: 16px;
+}
+
 .form-create-header {
   display: flex;
   align-items: center;
@@ -58,6 +86,40 @@
   gap: 20px;
   flex: 1;
   overflow: hidden;
+}
+
+.form-basic-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #14171a;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #e1e8ed;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #1da1f2;
+  box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.1);
 }
 
 .form-columns {
@@ -126,6 +188,32 @@
   background-color: #fff5f8;
   border: 1px solid #ffd6e0;
   border-radius: 6px;
+}
+
+.validation-errors {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #fff8e1;
+  border: 1px solid #ffd54f;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.validation-header {
+  color: #f57c00;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.validation-list {
+  margin: 0;
+  padding-left: 20px;
+  color: #e65100;
+  line-height: 1.6;
+}
+
+.validation-list li {
+  margin-bottom: 4px;
 }
 
 .preview-section {
@@ -248,6 +336,48 @@
   color: #38444d;
   font-size: 16px;
   line-height: 1.4;
+}
+
+.question-select {
+  margin-top: 8px;
+}
+
+.select-dropdown {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e1e8ed;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #14171a;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.select-dropdown:hover {
+  border-color: #1da1f2;
+  background-color: #f7f9fa;
+}
+
+.select-dropdown:focus {
+  outline: none;
+  border-color: #1da1f2;
+  box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.1);
+}
+
+.select-dropdown option {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.select-dropdown option:disabled {
+  color: #657786;
 }
 
 .form-actions {
