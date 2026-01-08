@@ -47,6 +47,8 @@ const initDatabase = async () => {
         "status" VARCHAR(32) NOT NULL DEFAULT 'draft' CHECK ("status" IN ('draft', 'active', 'deleted')),
         "url" VARCHAR(255) NOT NULL,
         "createUserId" UUID NOT NULL,
+        "isStarred" BOOLEAN NOT NULL DEFAULT false,
+        "deletedAt" TIMESTAMP WITH TIME ZONE,
         "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
         "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
         "publishTime" TIMESTAMP WITH TIME ZONE,

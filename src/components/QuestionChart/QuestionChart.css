@@ -1,0 +1,113 @@
+.question-chart {
+  background: #FAFAFA;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.chart-btn {
+  padding: 8px 16px;
+  background-color: #FFFFFF;
+  color: #757575;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chart-btn:hover {
+  border-color: #8BC34A;
+  color: #8BC34A;
+}
+
+.chart-btn.active {
+  background-color: #8BC34A;
+  color: white;
+  border-color: #8BC34A;
+}
+
+/* 表格样式 */
+.chart-table-wrapper {
+  background: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.chart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.chart-table thead {
+  background-color: #F5F5F5;
+}
+
+.chart-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #757575;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chart-table td {
+  padding: 12px 16px;
+  border-top: 1px solid #E0E0E0;
+  font-size: 14px;
+  color: #333333;
+}
+
+.chart-table tbody tr:hover {
+  background-color: #F5F5F5;
+}
+
+/* 图表容器 */
+.chart-container {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chart-controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .chart-btn {
+    flex: 1;
+    min-width: 80px;
+  }
+}

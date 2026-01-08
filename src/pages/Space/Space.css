@@ -1,12 +1,11 @@
-.space-container {
+  .space-container {
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: #FFFFFF;
 }
 
 .space-header {
-  background: white;
+  background: #FAFAFA;
   padding: 20px 40px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,7 +24,7 @@
 .space-header h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #14171a;
+  color: #333333;
   margin: 0;
 }
 
@@ -36,29 +35,59 @@
 }
 
 .user-info {
-  color: #657786;
+  color: #757575;
   font-size: 14px;
 }
 
 .logout-button {
   padding: 8px 16px;
-  background-color: #e1e8ed;
-  color: #14171a;
-  border: none;
-  border-radius: 6px;
+  background-color: transparent;
+  color: #757575;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .logout-button:hover {
-  background-color: #d4d9dd;
+  color: #8BC34A;
+  border-color: #8BC34A;
 }
 
 .space-main {
   max-width: 1400px;
   margin: 0 auto;
   padding: 30px 40px;
+}
+
+.space-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #E0E0E0;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #757575;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.tab-button:hover {
+  color: #8BC34A;
+}
+
+.tab-button.active {
+  color: #8BC34A;
+  border-bottom-color: #8BC34A;
 }
 
 .space-toolbar {
@@ -77,12 +106,12 @@
 .toolbar-left h2 {
   font-size: 22px;
   font-weight: 600;
-  color: #14171a;
+  color: #333333;
   margin: 0;
 }
 
 .form-count {
-  color: #657786;
+  color: #757575;
   font-size: 14px;
 }
 
@@ -93,25 +122,25 @@
 
 .search-input {
   padding: 10px 16px;
-  border: 1px solid #e1e8ed;
-  border-radius: 6px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
   font-size: 14px;
   width: 280px;
   transition: all 0.2s;
+  background: #FFFFFF;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #1da1f2;
-  box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.1);
+  border-color: #8BC34A;
 }
 
 .create-button {
   padding: 10px 20px;
-  background-color: #1da1f2;
+  background-color: #8BC34A;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -119,15 +148,13 @@
 }
 
 .create-button:hover {
-  background-color: #1991da;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+  background-color: #7CB342;
 }
 
 .error-message {
-  background-color: #fff5f8;
-  border: 1px solid #ffd6e0;
-  color: #e0245e;
+  background-color: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  color: #C62828;
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -136,16 +163,15 @@
 .loading {
   text-align: center;
   padding: 60px;
-  color: #657786;
+  color: #757575;
   font-size: 16px;
 }
 
 .empty-state {
   text-align: center;
   padding: 80px 20px;
-  background: white;
+  background: #FAFAFA;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .empty-icon {
@@ -154,15 +180,14 @@
 }
 
 .empty-state p {
-  color: #657786;
+  color: #757575;
   font-size: 16px;
   margin-bottom: 24px;
 }
 
 .forms-table {
-  background: white;
+  background: #FAFAFA;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
@@ -172,7 +197,7 @@
 }
 
 .forms-table thead {
-  background-color: #f7f9fa;
+  background-color: #FAFAFA;
 }
 
 .forms-table th {
@@ -180,16 +205,17 @@
   text-align: left;
   font-size: 13px;
   font-weight: 600;
-  color: #657786;
+  color: #757575;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .forms-table td {
   padding: 16px;
-  border-top: 1px solid #e1e8ed;
+  border-top: 1px solid #E0E0E0;
   font-size: 14px;
-  color: #14171a;
+  color: #333333;
+  background: #FFFFFF;
 }
 
 .title-cell {
@@ -199,21 +225,21 @@
 }
 
 .form-title strong {
-  color: #14171a;
+  color: #333333;
   font-weight: 500;
 }
 
 .form-description {
-  color: #657786;
+  color: #757575;
   font-size: 13px;
 }
 
 .form-id code {
-  background-color: #f7f9fa;
+  background-color: #FAFAFA;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
-  color: #657786;
+  color: #757575;
   font-family: 'Courier New', monospace;
 }
 
@@ -226,18 +252,18 @@
 }
 
 .status-draft {
-  background-color: #fff3cd;
-  color: #856404;
+  background-color: #F5F5F5;
+  color: #BDBDBD;
 }
 
 .status-active {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: #E8F5E9;
+  color: #4CAF50;
 }
 
 .status-deleted {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: #FFEBEE;
+  color: #F44336;
 }
 
 .actions {
@@ -246,23 +272,51 @@
 }
 
 .action-btn {
-  padding: 6px 10px;
+  padding: 8px;
   border: none;
-  background: none;
+  background: #F5F5F5;
   cursor: pointer;
-  font-size: 16px;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn svg {
+  stroke: #333333;
 }
 
 .action-btn:hover:not(:disabled) {
-  background-color: #f7f9fa;
-  transform: scale(1.1);
+  background-color: #E8F5E9;
+}
+
+.action-btn:hover:not(:disabled) svg {
+  stroke: #8BC34A;
 }
 
 .action-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+.star-btn.starred svg {
+  fill: #FFD700;
+  stroke: #FFD700;
+}
+
+.response-count {
+  text-align: center;
+}
+
+.count-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: #E8F5E9;
+  color: #4CAF50;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .pagination {
@@ -276,18 +330,19 @@
 
 .page-btn {
   padding: 8px 16px;
-  background-color: white;
-  color: #14171a;
-  border: 1px solid #e1e8ed;
-  border-radius: 6px;
+  background-color: #FFFFFF;
+  color: #333333;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .page-btn:hover:not(:disabled) {
-  background-color: #f7f9fa;
-  border-color: #1da1f2;
+  background-color: #FAFAFA;
+  border-color: #8BC34A;
+  color: #8BC34A;
 }
 
 .page-btn:disabled {
@@ -296,7 +351,7 @@
 }
 
 .page-info {
-  color: #657786;
+  color: #757575;
   font-size: 14px;
 }
 

@@ -14,6 +14,9 @@ export const WEBAPI = {
   updateForm: (id) => `${API_CONFIG.baseURL}/api/surveys/${id}`,
   deleteForm: (id) => `${API_CONFIG.baseURL}/api/surveys/${id}`,
   getFormAnalytics: (id) => `${API_CONFIG.baseURL}/api/surveys/${id}/analytics`,
+  toggleStarForm: (id) => `${API_CONFIG.baseURL}/api/surveys/${id}/star`,
+  restoreForm: (id) => `${API_CONFIG.baseURL}/api/surveys/${id}/restore`,
+  permanentDeleteForm: (id) => `${API_CONFIG.baseURL}/api/surveys/${id}/permanent`,
   
   // 表单提交
   submitForm: `${API_CONFIG.baseURL}/api/submissions`,
