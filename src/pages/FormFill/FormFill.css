@@ -1,13 +1,13 @@
 .form-fill-container {
   min-height: 100vh;
-  background: #FFFFFF;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
 }
 
 .form-fill-header {
   text-align: center;
   padding: 30px 0;
-  color: #333333;
+  color: white;
 }
 
 .form-fill-header .logo {
@@ -19,32 +19,32 @@
   font-size: 32px;
   font-weight: 600;
   margin: 0;
-  color: #333333;
 }
 
 .form-fill-content {
   max-width: 800px;
   margin: 0 auto;
-  background: #FAFAFA;
+  background: white;
   border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   padding: 40px;
 }
 
 .form-info {
   margin-bottom: 40px;
   padding-bottom: 30px;
-  border-bottom: 2px solid #E0E0E0;
+  border-bottom: 2px solid #e1e8ed;
 }
 
 .form-info h2 {
   font-size: 28px;
-  color: #333333;
+  color: #14171a;
   margin: 0 0 12px 0;
 }
 
 .form-description {
   font-size: 16px;
-  color: #757575;
+  color: #657786;
   line-height: 1.6;
   margin: 0;
 }
@@ -55,22 +55,22 @@
 
 .survey-title {
   font-size: 22px;
-  color: #333333;
+  color: #14171a;
   margin: 0 0 8px 0;
 }
 
 .survey-description {
   font-size: 15px;
-  color: #757575;
+  color: #657786;
   margin: 0 0 24px 0;
 }
 
 .question-block {
   margin-bottom: 32px;
   padding: 24px;
-  background-color: #FFFFFF;
+  background-color: #f7f9fa;
   border-radius: 8px;
-  border-left: 4px solid #8BC34A;
+  border-left: 4px solid #1da1f2;
 }
 
 .question-header {
@@ -82,19 +82,19 @@
 
 .question-number {
   font-weight: 600;
-  color: #8BC34A;
+  color: #1da1f2;
   font-size: 16px;
 }
 
 .question-text {
   font-size: 16px;
-  color: #333333;
+  color: #14171a;
   font-weight: 500;
   flex: 1;
 }
 
 .required-mark {
-  color: #F44336;
+  color: #e0245e;
   font-size: 18px;
 }
 
@@ -109,16 +109,16 @@
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: #FAFAFA;
-  border: 2px solid #E0E0E0;
-  border-radius: 8px;
+  background: white;
+  border: 2px solid #e1e8ed;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .option-item:hover {
-  border-color: #8BC34A;
-  background-color: #F1F8E9;
+  border-color: #1da1f2;
+  background-color: #f0f8ff;
 }
 
 .option-item input[type='radio'],
@@ -130,7 +130,7 @@
 
 .option-text {
   font-size: 15px;
-  color: #333333;
+  color: #14171a;
   flex: 1;
 }
 
@@ -141,15 +141,15 @@
 .select-dropdown {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #E0E0E0;
-  border-radius: 8px;
+  border: 2px solid #e1e8ed;
+  border-radius: 6px;
   font-size: 15px;
-  color: #333333;
-  background-color: #FAFAFA;
+  color: #14171a;
+  background-color: white;
   cursor: pointer;
   transition: all 0.2s;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238BC34A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231da1f2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 16px center;
   background-size: 20px;
@@ -157,59 +157,64 @@
 }
 
 .select-dropdown:hover {
-  border-color: #8BC34A;
-  background-color: #F1F8E9;
+  border-color: #1da1f2;
+  background-color: #f0f8ff;
 }
 
 .select-dropdown:focus {
   outline: none;
-  border-color: #8BC34A;
+  border-color: #1da1f2;
+  box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.1);
 }
 
 .select-dropdown option {
   padding: 12px;
   font-size: 15px;
-  color: #333333;
+  color: #14171a;
 }
 
 .select-dropdown option:disabled {
-  color: #757575;
+  color: #657786;
 }
 
 .form-actions {
   margin-top: 40px;
   padding-top: 30px;
-  border-top: 2px solid #E0E0E0;
+  border-top: 2px solid #e1e8ed;
   text-align: center;
 }
 
 .submit-button {
   padding: 14px 48px;
-  background-color: #8BC34A;
+  background-color: #1da1f2;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   min-width: 200px;
 }
 
 .submit-button:hover:not(:disabled) {
-  background-color: #7CB342;
+  background-color: #1991da;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(29, 161, 242, 0.4);
 }
 
 .submit-button:disabled {
-  background-color: #C5E1A5;
+  background-color: #a0d3f5;
   cursor: not-allowed;
+  transform: none;
 }
 
 .form-fill-footer {
   text-align: center;
   padding: 30px 0;
-  color: #757575;
+  color: white;
   font-size: 14px;
+  opacity: 0.8;
 }
 
 .loading-state,
@@ -221,7 +226,7 @@
   justify-content: center;
   min-height: 60vh;
   gap: 20px;
-  color: #333333;
+  color: white;
   text-align: center;
 }
 

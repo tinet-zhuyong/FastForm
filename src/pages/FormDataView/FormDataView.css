@@ -1,11 +1,12 @@
 .data-view-container {
   min-height: 100vh;
-  background-color: #FFFFFF;
+  background-color: #f5f7fa;
 }
 
 .data-view-header {
-  background: #FAFAFA;
+  background: white;
   padding: 20px 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   gap: 20px;
@@ -19,14 +20,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 4px;
   transition: all 0.2s;
-  color: #757575;
 }
 
 .back-button:hover {
-  background-color: #F5F5F5;
-  color: #8BC34A;
+  background-color: #f7f9fa;
 }
 
 .back-icon {
@@ -37,12 +36,12 @@
 .header-info h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #333333;
+  color: #14171a;
   margin: 0 0 4px 0;
 }
 
 .form-description {
-  color: #757575;
+  color: #657786;
   font-size: 14px;
   margin: 0;
 }
@@ -62,28 +61,30 @@
 }
 
 .stat-card {
-  background: #FAFAFA;
+  background: white;
   padding: 24px;
   border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .stat-label {
   font-size: 14px;
-  color: #757575;
+  color: #657786;
   margin-bottom: 8px;
 }
 
 .stat-value {
   font-size: 28px;
   font-weight: 600;
-  color: #333333;
+  color: #14171a;
 }
 
 /* 工具栏 */
 .toolbar {
-  background: #FAFAFA;
+  background: white;
   padding: 20px;
   border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
@@ -104,15 +105,14 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #333333;
+  color: #14171a;
 }
 
 .filter-section input[type='datetime-local'] {
   padding: 8px 12px;
-  border: 1px solid #E0E0E0;
-  border-radius: 8px;
+  border: 1px solid #e1e8ed;
+  border-radius: 6px;
   font-size: 14px;
-  background: #FFFFFF;
 }
 
 .filter-button,
@@ -120,7 +120,7 @@
 .export-button {
   padding: 10px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -128,38 +128,39 @@
 }
 
 .filter-button {
-  background-color: #8BC34A;
+  background-color: #1da1f2;
   color: white;
 }
 
 .filter-button:hover {
-  background-color: #7CB342;
+  background-color: #1991da;
 }
 
 .clear-button {
-  background-color: transparent;
-  color: #757575;
-  border: 1px solid #E0E0E0;
+  background-color: #e1e8ed;
+  color: #14171a;
 }
 
 .clear-button:hover {
-  color: #8BC34A;
-  border-color: #8BC34A;
+  background-color: #d4d9dd;
 }
 
 .export-button {
-  background-color: #8BC34A;
+  background-color: #10b981;
   color: white;
 }
 
 .export-button:hover {
-  background-color: #7CB342;
+  background-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 /* 数据表格 */
 .data-table-wrapper {
-  background: #FAFAFA;
+  background: white;
   border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow-x: auto;
   margin-bottom: 20px;
 }
@@ -171,7 +172,7 @@
 }
 
 .data-table thead {
-  background-color: #FAFAFA;
+  background-color: #f7f9fa;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -182,46 +183,42 @@
   text-align: left;
   font-size: 13px;
   font-weight: 600;
-  color: #757575;
+  color: #657786;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  border-bottom: 2px solid #E0E0E0;
+  border-bottom: 2px solid #e1e8ed;
 }
 
 .data-table td {
   padding: 16px;
-  border-bottom: 1px solid #E0E0E0;
+  border-bottom: 1px solid #e1e8ed;
   font-size: 14px;
-  color: #333333;
+  color: #14171a;
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
-  background: #FFFFFF;
 }
 
 .data-table tbody tr:hover {
-  background-color: #F5F5F5;
-}
-
-.data-table tbody tr:hover td {
-  background-color: #F5F5F5;
+  background-color: #f7f9fa;
 }
 
 .sticky-col {
   position: sticky;
   left: 0;
-  background-color: #FFFFFF;
+  background-color: white;
   z-index: 5;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
 }
 
 .data-table thead .sticky-col {
-  background-color: #FAFAFA;
+  background-color: #f7f9fa;
   z-index: 15;
 }
 
 .data-table tbody tr:hover .sticky-col {
-  background-color: #F5F5F5;
+  background-color: #f7f9fa;
 }
 
 /* 分页 */
@@ -235,19 +232,18 @@
 
 .page-btn {
   padding: 10px 20px;
-  background-color: #FFFFFF;
-  color: #333333;
-  border: 1px solid #E0E0E0;
-  border-radius: 8px;
+  background-color: white;
+  color: #14171a;
+  border: 1px solid #e1e8ed;
+  border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .page-btn:hover:not(:disabled) {
-  background-color: #FAFAFA;
-  border-color: #8BC34A;
-  color: #8BC34A;
+  background-color: #f7f9fa;
+  border-color: #1da1f2;
 }
 
 .page-btn:disabled {
@@ -256,7 +252,7 @@
 }
 
 .page-info {
-  color: #757575;
+  color: #657786;
   font-size: 14px;
 }
 
@@ -264,17 +260,18 @@
 .loading {
   text-align: center;
   padding: 60px;
-  color: #757575;
+  color: #657786;
   font-size: 16px;
-  background: #FAFAFA;
+  background: white;
   border-radius: 12px;
 }
 
 .empty-state {
   text-align: center;
   padding: 80px 20px;
-  background: #FAFAFA;
+  background: white;
   border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .empty-icon {
@@ -283,7 +280,7 @@
 }
 
 .empty-state p {
-  color: #757575;
+  color: #657786;
   font-size: 16px;
   margin: 0;
 }
@@ -303,16 +300,16 @@
 
 .error-state h2 {
   font-size: 24px;
-  color: #333333;
+  color: #14171a;
   margin: 0;
 }
 
 .back-button-large {
   padding: 12px 24px;
-  background-color: #8BC34A;
+  background-color: #1da1f2;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -320,7 +317,9 @@
 }
 
 .back-button-large:hover {
-  background-color: #7CB342;
+  background-color: #1991da;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
 }
 
 /* 响应式设计 */

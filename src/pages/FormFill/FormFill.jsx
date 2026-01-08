@@ -193,9 +193,18 @@ const FormFill = () => {
       </div>
 
       <div className="form-fill-content">
+        <div className="form-info">
+          <h2>{form.title}</h2>
+          {form.description && <p className="form-description">{form.description}</p>}
+        </div>
+
         <form onSubmit={handleSubmit} className="fill-form">
           {surveys.map((survey, surveyIndex) => (
-            <div key={surveyIndex} className="survey-section">{survey.questions && survey.questions.map((question, questionIndex) => (
+            <div key={surveyIndex} className="survey-section">
+              {survey.title && <h3 className="survey-title">{survey.title}</h3>}
+              {survey.description && <p className="survey-description">{survey.description}</p>}
+
+              {survey.questions && survey.questions.map((question, questionIndex) => (
                 <div key={question.id} className="question-block">
                   <div className="question-header">
                     <span className="question-number">{questionIndex + 1}.</span>
