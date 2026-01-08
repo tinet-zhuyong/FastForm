@@ -3,15 +3,14 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #FFFFFF;
   padding: 20px;
 }
 
 .register-form {
-  background: white;
+  background: #FAFAFA;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 420px;
 }
@@ -24,14 +23,14 @@
 
 .register-form h1 {
   text-align: center;
-  color: #14171a;
+  color: #333333;
   margin: 0 0 10px 0;
   font-size: 28px;
 }
 
 .register-subtitle {
   text-align: center;
-  color: #657786;
+  color: #757575;
   margin: 0 0 30px 0;
   font-size: 16px;
 }
@@ -43,7 +42,7 @@
 .register-form label {
   display: block;
   margin-bottom: 8px;
-  color: #14171a;
+  color: #333333;
   font-weight: 500;
   font-size: 14px;
 }
@@ -51,25 +50,25 @@
 .register-form input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e1e8ed;
-  border-radius: 6px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
   font-size: 15px;
   transition: all 0.2s;
   box-sizing: border-box;
+  background: #FFFFFF;
 }
 
 .register-form input:focus {
   outline: none;
-  border-color: #1da1f2;
-  box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.1);
+  border-color: #8BC34A;
 }
 
 .error-message {
-  background-color: #fff5f8;
-  border: 1px solid #ffd6e0;
-  color: #e0245e;
+  background-color: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  color: #C62828;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-bottom: 20px;
   font-size: 14px;
 }
@@ -77,26 +76,23 @@
 .register-button {
   width: 100%;
   padding: 14px;
-  background-color: #1da1f2;
+  background-color: #8BC34A;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .register-button:hover:not(:disabled) {
-  background-color: #1991da;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+  background-color: #7CB342;
 }
 
 .register-button:disabled {
-  background-color: #a0d3f5;
+  background-color: #C5E1A5;
   cursor: not-allowed;
-  transform: none;
 }
 
 .register-footer {
@@ -105,19 +101,19 @@
 }
 
 .register-footer p {
-  color: #657786;
+  color: #757575;
   font-size: 14px;
   margin: 0;
 }
 
 .register-footer a {
-  color: #1da1f2;
+  color: #8BC34A;
   text-decoration: none;
   font-weight: 500;
 }
 
 .register-footer a:hover {
-  text-decoration: underline;
+  color: #7CB342;
 }
 
 @media (max-width: 480px) {
