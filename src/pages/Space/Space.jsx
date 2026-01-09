@@ -219,7 +219,8 @@ const Space = () => {
   // 退出登录
   const handleLogout = () => {
     clearUserInfo();
-    navigate('/', { replace: true });
+    // 使用window.location.href确保完全刷新页面，避免状态缓存问题
+    window.location.href = '/';
   };
 
   return (

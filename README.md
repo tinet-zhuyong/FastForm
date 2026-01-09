@@ -1,10 +1,58 @@
 # FastForm - 在线问卷系统
 
-FastForm 是一个基于 React + Node.js + PostgreSQL 的全栈在线问卷系统，支持表单创建、分享、填写和数据分析。
+FastForm 是一个基于 **React + Express + PostgreSQL** 的全栈在线问卷系统，采用前后端分离架构，提供完整的表单创建、分享、填写和数据分析功能。
 
 ## 📋 项目概述
 
 FastForm 提供了完整的问卷管理解决方案，从表单创建到数据收集和分析，为用户提供流畅的使用体验。
+
+### 🎯 核心功能
+- ✅ **用户认证** - 注册、登录、权限管理
+- ✅ **表单管理** - 创建、编辑、发布、星标、回收站
+- ✅ **表单填写** - 公开访问、防重复提交、多种题型
+- ✅ **数据分析** - 统计报告、图表可视化、数据导出
+- ✅ **安全机制** - 密码加密、SQL防注入、权限控制
+
+### 📚 项目文档
+- [📖 项目架构与流程说明](docs/项目架构与流程说明.md) - 详细的技术架构和实现思路
+- [📊 业务流程图详解](docs/业务流程图详解.md) - 完整的业务流程图
+- [📈 数据概览页面功能说明](docs/数据概览页面功能说明.md) - 数据分析功能详解
+- [⭐ 星标和回收站功能说明](docs/星标和回收站功能说明.md) - 表单管理功能详解
+- [📝 快速参考手册](docs/快速参考手册.md) - API接口、常用命令、故障排查
+- [📋 项目总结](docs/项目总结.md) - 项目概况、技术亮点、经验总结
+- [🔧 退出登录跳转问题修复](docs/退出登录跳转问题修复.md) - 问题修复记录
+- [✅ 功能测试清单](docs/功能测试清单.md) - 完整的测试用例
+
+---
+
+## 🏗️ 项目架构
+
+### 整体架构
+```
+用户层 (管理员/创建者/填写者)
+    ↓
+前端层 (React + Vite)
+    ├─ 页面组件 (Pages)
+    ├─ 公共组件 (Components)
+    └─ 工具函数 (Utils)
+    ↓ HTTP/HTTPS
+后端层 (Express)
+    ├─ 路由层 (Routes)
+    ├─ 控制器层 (Controllers)
+    ├─ 服务层 (Services)
+    └─ 中间件 (Middleware)
+    ↓ SQL
+数据层 (PostgreSQL)
+    ├─ users (用户表)
+    ├─ forms (表单表)
+    └─ submissions (提交记录表)
+```
+
+### 设计模式
+- **MVC架构** - 模型-视图-控制器分离
+- **三层架构** - 表现层、业务层、数据层
+- **RESTful API** - 标准化的API设计
+- **前后端分离** - 独立开发、独立部署
 
 ---
 
@@ -38,10 +86,13 @@ FastForm 提供了完整的问卷管理解决方案，从表单创建到数据�
 - **文件**: `src/pages/Space/Space.jsx`
 - **样式**: `src/pages/Space/Space.css`
 - **功能**:
+  - 三个标签页：全部问卷、星标问卷、回收站
   - 展示用户创建的所有表单
+  - 显示答卷数量（实时统计）
   - 搜索（按标题或 formId）
   - 分页（每页 10 条）
-  - 表单操作：编辑、删除、发布/停用、复制链接、查看数据
+  - 表单操作：星标、编辑、删除、发布/停用、复制链接、查看数据
+  - 回收站操作：恢复、永久删除
 
 #### 📄 表单创建/编辑页
 - **文件**: `src/pages/FormCreate/FormCreate.jsx`
@@ -84,12 +135,27 @@ FastForm 提供了完整的问卷管理解决方案，从表单创建到数据�
 - **文件**: `src/pages/FormDataView/FormDataView.jsx`
 - **样式**: `src/pages/FormDataView/FormDataView.css`
 - **功能**:
-  - 统计概览（总提交数、最早/最近提交时间）
-  - 时间范围筛选
-  - 表格展示提交数据
-  - 分页（每页 20 条）
-  - CSV 导出（支持中文 UTF-8 BOM）
+  - **数据查询报告**
+    - 统计概览（总提交数、最早/最近提交时间）
+    - 时间范围筛选
+    - 表格展示提交数据
+    - 分页（每页 10 条）
+    - CSV 导出（支持中文 UTF-8 BOM）
+  - **统计分析报告**
+    - 自定义选择要分析的问题
+    - 表格展示（选项、人数、比例）
+    - 图表可视化（饼图、柱状图、条形图）
+    - Excel 导出
   - 权限控制（仅创建者可查看）
+
+#### 📊 图表组件
+- **文件**: `src/components/QuestionChart/QuestionChart.jsx`
+- **样式**: `src/components/QuestionChart/QuestionChart.css`
+- **功能**:
+  - 使用 Recharts 渲染图表
+  - 支持饼图、柱状图、条形图
+  - 交互式图表（hover 显示详情）
+  - 按钮控制显示/隐藏
 
 ---
 
@@ -210,32 +276,52 @@ FastForm 提供了完整的问卷管理解决方案，从表单创建到数据�
 ### 表结构
 
 #### 👤 用户表 (users)
-- `userId` (UUID, 主键)
-- `username` (唯一)
-- `password` (SHA-256 加密)
-- `role` (admin/normal)
-- `email` (唯一)
-- `createdAt`, `updatedAt`
+```sql
+userId          UUID PRIMARY KEY        -- 用户ID
+username        VARCHAR(64) UNIQUE      -- 用户名（唯一）
+password        VARCHAR(128)            -- 密码（SHA-256加密）
+role            VARCHAR(32)             -- 角色（admin/normal）
+email           VARCHAR(128) UNIQUE     -- 邮箱（唯一）
+createdAt       TIMESTAMP               -- 创建时间
+updatedAt       TIMESTAMP               -- 更新时间
+```
 
 #### 📋 表单表 (forms)
-- `formId` (UUID, 主键)
-- `title` (唯一)
-- `description`
-- `jsonSchema` (JSONB)
-- `createType` (template/blank/json)
-- `status` (draft/active/deleted)
-- `url` (唯一)
-- `createUserId` (外键 → users)
-- `createdAt`, `updatedAt`, `publishTime`
+```sql
+formId          UUID PRIMARY KEY        -- 表单ID
+title           VARCHAR(255)            -- 表单标题
+description     TEXT                    -- 表单描述
+jsonSchema      JSONB                   -- 表单配置（JSON格式）
+createType      VARCHAR(32)             -- 创建方式（template/blank/json）
+status          VARCHAR(32)             -- 状态（draft/active/deleted）
+url             VARCHAR(255) UNIQUE     -- 访问URL（唯一）
+createUserId    UUID                    -- 创建者ID（外键→users）
+isStarred       BOOLEAN                 -- 是否星标
+deletedAt       TIMESTAMP               -- 删除时间（软删除）
+createdAt       TIMESTAMP               -- 创建时间
+updatedAt       TIMESTAMP               -- 更新时间
+publishTime     TIMESTAMP               -- 发布时间
+```
 
 #### 📝 提交记录表 (submissions)
-- `submissionId` (UUID, 主键)
-- `formId` (外键 → forms)
-- `responseData` (JSONB)
-- `submitToken` (唯一，防重复提交)
-- `ipAddress`
-- `userAgent`
-- `submittedAt`
+```sql
+submissionId    UUID PRIMARY KEY        -- 提交ID
+formId          UUID                    -- 表单ID（外键→forms）
+responseData    JSONB                   -- 答案数据（JSON格式）
+submitToken     VARCHAR(128) UNIQUE     -- 提交令牌（防重复提交）
+ipAddress       VARCHAR(64)             -- IP地址
+userAgent       TEXT                    -- 浏览器信息
+submittedAt     TIMESTAMP               -- 提交时间
+```
+
+### 数据库关系
+```
+users (1) ──────< (N) forms
+                      │
+                      │ (1)
+                      │
+                      └──────< (N) submissions
+```
 
 ---
 
@@ -253,58 +339,86 @@ FastForm 提供了完整的问卷管理解决方案，从表单创建到数据�
 ## 🎯 核心功能特性
 
 ### ✅ 用户认证
-- SHA-256 密码加密
-- JWT 或 Session 管理
-- 路由保护
+- **密码加密** - SHA-256 哈希加密
+- **会话管理** - localStorage 存储用户信息
+- **路由保护** - ProtectedRoute 组件拦截未登录访问
+- **自动跳转** - 已登录用户访问登录页自动跳转
 
 ### ✅ 表单管理
-- JSON 配置创建表单
-- 实时预览
-- 完善的表单验证
-- 支持三种题型（单选、多选、下拉）
-- 表单状态管理（草稿、已发布、已删除）
+- **JSON 配置** - 灵活的表单配置方式
+- **实时预览** - 编辑时即时查看效果
+- **表单验证** - 完善的格式和逻辑验证
+- **三种题型** - 单选、多选、下拉选择
+- **状态管理** - 草稿、已发布、已删除
+- **星标功能** - 快速标记重要表单
+- **回收站** - 软删除机制，支持恢复
+- **答卷统计** - 实时显示答卷数量
 
 ### ✅ 表单填写
-- 公开访问链接
-- 防重复提交（前端4层 + 后端令牌验证）
-- 必填验证
-- 友好的用户界面
+- **公开访问** - 无需登录即可填写
+- **防重复提交** - 5层防护机制
+  1. 提交按钮禁用
+  2. 提交状态标记
+  3. 成功后跳转
+  4. 唯一令牌生成
+  5. 数据库唯一约束
+- **必填验证** - 前端实时验证
+- **友好界面** - 清晰的UI设计
 
 ### ✅ 数据分析
-- 统计概览
-- 时间筛选
-- 分页浏览
-- CSV 导出（支持中文）
-- 权限控制
+- **数据查询报告**
+  - 统计概览（总数、时间范围）
+  - 时间筛选
+  - 分页浏览（每页10条）
+  - CSV 导出（支持中文）
+- **统计分析报告**
+  - 自定义选择分析问题
+  - 表格展示（选项、人数、比例）
+  - 图表可视化（饼图、柱状图、条形图）
+  - Excel 导出
+- **权限控制** - 仅创建者可查看
 
-### ✅ 安全性
-- 密码加密
-- SQL 注入防护（参数化查询）
-- CORS 配置
-- 防重复提交
-- 权限验证
+### ✅ 安全机制
+- **密码安全** - SHA-256 加密存储
+- **SQL 防注入** - 参数化查询
+- **CORS 配置** - 跨域请求控制
+- **防重复提交** - 多层防护
+- **权限验证** - 数据访问控制
+- **软删除** - 数据可恢复
 
 ---
 
 ## 📊 技术栈
 
-### 前端
-- **框架**: React 18
-- **路由**: React Router v6
-- **HTTP**: Axios
-- **构建**: Vite
-- **样式**: CSS Modules
+### 前端技术
+```
+React 18.3.1          - UI框架
+React Router 6.x      - 路由管理
+Axios                 - HTTP客户端
+Vite 7.3.0           - 构建工具
+Recharts             - 图表库
+XLSX                 - Excel导出
+CSS3                 - 样式设计
+```
 
-### 后端
-- **运行时**: Node.js
-- **框架**: Express
-- **数据库**: PostgreSQL
-- **ORM**: 原生 SQL（pg 库）
+### 后端技术
+```
+Node.js 14+          - 运行环境
+Express 4.x          - Web框架
+PostgreSQL 12+       - 关系型数据库
+pg                   - PostgreSQL客户端
+crypto               - 密码加密
+dotenv               - 环境变量管理
+cors                 - 跨域处理
+```
 
 ### 开发工具
-- **包管理**: npm
-- **环境变量**: dotenv
-- **代码规范**: ESLint
+```
+npm                  - 包管理器
+ESLint               - 代码规范
+nodemon              - 热重载
+Git                  - 版本控制
+```
 
 ---
 

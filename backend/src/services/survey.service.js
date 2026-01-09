@@ -88,16 +88,6 @@ export const createSurvey = async (surveyData) => {
     createUserId 
   } = surveyData;
 
-  // 检查标题是否已存在
-  const existingTitle = await query(
-    'SELECT "formId" FROM "forms" WHERE "title" = $1',
-    [title]
-  );
-
-  if (existingTitle.rows.length > 0) {
-    throw new Error('表单标题已存在');
-  }
-
   // 检查 URL 是否已存在
   const existingUrl = await query(
     'SELECT "formId" FROM "forms" WHERE "url" = $1',
