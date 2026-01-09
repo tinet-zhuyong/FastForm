@@ -210,6 +210,44 @@
   letter-spacing: 0.5px;
 }
 
+/* 表头排序容器 */
+.th-with-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 排序按钮 */
+.sort-btn {
+  padding: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.sort-btn:hover {
+  background-color: #E8F5E9;
+}
+
+/* 排序图标 */
+.sort-icon {
+  stroke: #BDBDBD;
+  transition: all 0.2s;
+}
+
+.sort-btn:hover .sort-icon {
+  stroke: #8BC34A;
+}
+
+.sort-icon.active {
+  stroke: #8BC34A;
+}
+
 .forms-table td {
   padding: 16px;
   border-top: 1px solid #E0E0E0;

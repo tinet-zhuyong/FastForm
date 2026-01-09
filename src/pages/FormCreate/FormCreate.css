@@ -389,40 +389,42 @@
   border-top: 1px solid #e1e8ed;
 }
 
-.cancel-button, .create-button {
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-size: 16px;
+.cancel-button {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #757575;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  border: none;
-}
-
-.cancel-button {
-  background-color: #e1e8ed;
-  color: #657786;
+  transition: all 0.2s;
 }
 
 .cancel-button:hover {
-  background-color: #d4d9dd;
+  background-color: #FAFAFA;
+  border-color: #BDBDBD;
 }
 
 .create-button {
-  background-color: #1da1f2;
+  padding: 10px 20px;
+  background-color: #8BC34A;
   color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.create-button:hover {
-  background-color: #1991da;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(29, 161, 242, 0.3);
+.create-button:hover:not(:disabled) {
+  background-color: #7CB342;
 }
 
 .create-button:disabled {
-  background-color: #a0d3f5;
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }
 
 @media (max-width: 768px) {
@@ -457,5 +459,234 @@
   
   .back-button {
     margin-right: 0;
+  }
+}
+
+/* 另存为按钮 */
+.save-as-button {
+  padding: 10px 20px;
+  background-color: #FFFFFF;
+  color: #8BC34A;
+  border: 1px solid #8BC34A;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-as-button:hover:not(:disabled) {
+  background-color: #F1F8E9;
+}
+
+.save-as-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 对话框遮罩层 */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 对话框内容 */
+.dialog-content {
+  background: #FFFFFF;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 对话框头部 */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.dialog-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #757575;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.dialog-close:hover {
+  background-color: #F5F5F5;
+  color: #333333;
+}
+
+/* 对话框表单 */
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 对话框主体 */
+.dialog-body {
+  padding: 24px;
+}
+
+.dialog-body .form-group {
+  margin-bottom: 20px;
+}
+
+.dialog-body .form-group:last-of-type {
+  margin-bottom: 16px;
+}
+
+.dialog-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.dialog-body input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.dialog-body input:focus {
+  outline: none;
+  border-color: #8BC34A;
+  box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.1);
+}
+
+/* 对话框提示 */
+.dialog-hint {
+  padding: 12px;
+  background-color: #F1F8E9;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #558B2F;
+  line-height: 1.5;
+}
+
+/* 对话框底部 */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #E0E0E0;
+}
+
+.dialog-cancel-button {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #757575;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dialog-cancel-button:hover:not(:disabled) {
+  background-color: #FAFAFA;
+  border-color: #BDBDBD;
+}
+
+.dialog-cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dialog-confirm-button {
+  padding: 10px 20px;
+  background-color: #8BC34A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dialog-confirm-button:hover:not(:disabled) {
+  background-color: #7CB342;
+}
+
+.dialog-confirm-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .dialog-content {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .dialog-header {
+    padding: 16px 20px;
+  }
+
+  .dialog-body {
+    padding: 20px;
+  }
+
+  .dialog-footer {
+    padding: 12px 20px;
   }
 }

@@ -20,6 +20,9 @@ const FormCreate = () => {
   const [validationErrors, setValidationErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingForm, setIsLoadingForm] = useState(false);
+  const [showSaveAsDialog, setShowSaveAsDialog] = useState(false);
+  const [newFormTitle, setNewFormTitle] = useState('');
+  const [newFormDescription, setNewFormDescription] = useState('');
   const navigate = useNavigate();
 
   // 加载已有表单数据（编辑模式）
@@ -187,6 +190,95 @@ const FormCreate = () => {
     navigate('/space');
   };
 
+  // 打开另存为对话框
+  const handleOpenSaveAs = () => {
+    if (!formData) {
+      setError('请先输入有效的 JSON 数据');
+      return;
+    }
+
+    // 提交前校验
+    const validation = validateFormSchema(formData);
+    if (!validation.valid) {
+      setError(formatValidationErrors(validation.errors));
+      setValidationErrors(validation.errors);
+      return;
+    }
+
+    // 设置默认值
+    setNewFormTitle(formTitle + ' - 副本');
+    setNewFormDescription(formDescription);
+    setShowSaveAsDialog(true);
+  };
+
+  // 关闭另存为对话框
+  const handleCloseSaveAs = () => {
+    setShowSaveAsDialog(false);
+    setNewFormTitle('');
+    setNewFormDescription('');
+  };
+
+  // 另存为新表单
+  const handleSaveAsNewForm = async (e) => {
+    e.preventDefault();
+
+    if (!newFormTitle.trim()) {
+      alert('请输入新表单标题');
+      return;
+    }
+
+    if (!formData) {
+      alert('表单数据无效');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setError('');
+
+      const userId = getUserId();
+      if (!userId) {
+        setError('用户未登录，请先登录');
+        navigate('/');
+        return;
+      }
+
+      // 创建新表单
+      const formPayload = {
+        title: newFormTitle,
+        description: newFormDescription || '',
+        jsonSchema: formData,
+        createType: 'json',
+        url: generateFormUrl(newFormTitle),
+        createUserId: userId,
+      };
+
+      const response = await axios.post(WEBAPI.createForm, formPayload, {
+        timeout: API_CONFIG.timeout,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.data.success) {
+        handleCloseSaveAs();
+        navigate('/space');
+      } else {
+        alert(response.data.error?.message || '保存新表单失败');
+      }
+    } catch (err) {
+      if (err.code === 'ECONNABORTED') {
+        alert('请求超时，请稍后重试');
+      } else if (err.response?.data?.error?.message) {
+        alert(err.response.data.error.message);
+      } else {
+        alert(err.message || '保存失败');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (isLoadingForm) {
     return (
       <div className="form-create-container">
@@ -347,6 +439,16 @@ const FormCreate = () => {
             <button type="button" className="cancel-button" onClick={handleBack}>
               取消
             </button>
+            {isEditMode && (
+              <button 
+                type="button" 
+                className="save-as-button" 
+                onClick={handleOpenSaveAs}
+                disabled={isLoading || validationErrors.length > 0}
+              >
+                另存为新表单
+              </button>
+            )}
             <button 
               type="submit" 
               className="create-button" 
@@ -357,6 +459,66 @@ const FormCreate = () => {
           </div>
         </form>
       </main>
+
+      {/* 另存为对话框 */}
+      {showSaveAsDialog && (
+        <div className="dialog-overlay" onClick={handleCloseSaveAs}>
+          <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+            <div className="dialog-header">
+              <h3>另存为新表单</h3>
+              <button className="dialog-close" onClick={handleCloseSaveAs}>
+                ✕
+              </button>
+            </div>
+            <form onSubmit={handleSaveAsNewForm} className="dialog-form">
+              <div className="dialog-body">
+                <div className="form-group">
+                  <label htmlFor="new-form-title">新表单标题 *</label>
+                  <input
+                    type="text"
+                    id="new-form-title"
+                    value={newFormTitle}
+                    onChange={(e) => setNewFormTitle(e.target.value)}
+                    placeholder="请输入新表单标题"
+                    required
+                    autoFocus
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="new-form-description">新表单描述</label>
+                  <input
+                    type="text"
+                    id="new-form-description"
+                    value={newFormDescription}
+                    onChange={(e) => setNewFormDescription(e.target.value)}
+                    placeholder="请输入新表单描述（可选）"
+                  />
+                </div>
+                <div className="dialog-hint">
+                  💡 将使用当前的表单配置创建一个新表单
+                </div>
+              </div>
+              <div className="dialog-footer">
+                <button 
+                  type="button" 
+                  className="dialog-cancel-button" 
+                  onClick={handleCloseSaveAs}
+                  disabled={isLoading}
+                >
+                  取消
+                </button>
+                <button 
+                  type="submit" 
+                  className="dialog-confirm-button"
+                  disabled={isLoading}
+                >
+                  {isLoading ? '保存中...' : '保存为新表单'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

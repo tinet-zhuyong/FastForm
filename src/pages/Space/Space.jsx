@@ -14,6 +14,7 @@ const Space = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'starred', 'trash'
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: null }); // 排序配置
   const itemsPerPage = 10;
 
   const userInfo = getUserInfo();
@@ -47,23 +48,85 @@ const Space = () => {
     loadForms();
   }, [activeTab]);
 
-  // 搜索功能
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setFilteredForms(forms);
-      setCurrentPage(1);
-      return;
+  // 排序功能
+  const handleSort = (key) => {
+    let direction = 'asc';
+    
+    // 如果点击的是当前排序字段，切换排序方向
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'asc') {
+        direction = 'desc';
+      } else if (sortConfig.direction === 'desc') {
+        // 第三次点击取消排序
+        setSortConfig({ key: null, direction: null });
+        return;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+
+  // 应用排序
+  const getSortedForms = (formsToSort) => {
+    if (!sortConfig.key) {
+      return formsToSort;
     }
 
-    const query = searchQuery.toLowerCase();
-    const filtered = forms.filter(
-      (form) =>
-        form.title.toLowerCase().includes(query) ||
-        form.formId.toLowerCase().includes(query)
-    );
-    setFilteredForms(filtered);
+    const sorted = [...formsToSort].sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortConfig.key) {
+        case 'responseCount':
+          aValue = parseInt(a.responseCount) || 0;
+          bValue = parseInt(b.responseCount) || 0;
+          break;
+        case 'status':
+          // 状态排序：draft < active < deleted
+          const statusOrder = { draft: 1, active: 2, deleted: 3 };
+          aValue = statusOrder[a.status] || 0;
+          bValue = statusOrder[b.status] || 0;
+          break;
+        case 'createdAt':
+        case 'updatedAt':
+          aValue = new Date(a[sortConfig.key]).getTime();
+          bValue = new Date(b[sortConfig.key]).getTime();
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+
+    return sorted;
+  };
+
+  // 搜索功能
+  useEffect(() => {
+    let filtered;
+    
+    if (!searchQuery.trim()) {
+      filtered = forms;
+    } else {
+      const query = searchQuery.toLowerCase();
+      filtered = forms.filter(
+        (form) =>
+          form.title.toLowerCase().includes(query) ||
+          form.formId.toLowerCase().includes(query)
+      );
+    }
+    
+    // 应用排序
+    const sorted = getSortedForms(filtered);
+    setFilteredForms(sorted);
     setCurrentPage(1);
-  }, [searchQuery, forms]);
+  }, [searchQuery, forms, sortConfig]);
 
   // 分页逻辑
   const totalPages = Math.ceil(filteredForms.length / itemsPerPage);
@@ -223,6 +286,34 @@ const Space = () => {
     window.location.href = '/';
   };
 
+  // 获取排序图标
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) {
+      // 未排序状态 - 显示双向箭头
+      return (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sort-icon">
+          <path d="M12 5v14M5 12l7 7 7-7"></path>
+        </svg>
+      );
+    }
+    
+    if (sortConfig.direction === 'asc') {
+      // 升序 - 向上箭头
+      return (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sort-icon active">
+          <path d="M12 19V5M5 12l7-7 7 7"></path>
+        </svg>
+      );
+    } else {
+      // 降序 - 向下箭头
+      return (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sort-icon active">
+          <path d="M12 5v14M5 12l7 7 7-7"></path>
+        </svg>
+      );
+    }
+  };
+
   return (
     <div className="space-container">
       <header className="space-header">
@@ -309,10 +400,58 @@ const Space = () => {
                   <tr>
                     <th>表单标题</th>
                     <th>表单 ID</th>
-                    {activeTab !== 'trash' && <th>状态</th>}
-                    {activeTab !== 'trash' && <th>答卷数量</th>}
-                    <th>创建时间</th>
-                    <th>最后修改</th>
+                    {activeTab !== 'trash' && (
+                      <th>
+                        <div className="th-with-sort">
+                          <span>状态</span>
+                          <button 
+                            className="sort-btn" 
+                            onClick={() => handleSort('status')}
+                            title="排序"
+                          >
+                            {getSortIcon('status')}
+                          </button>
+                        </div>
+                      </th>
+                    )}
+                    {activeTab !== 'trash' && (
+                      <th>
+                        <div className="th-with-sort">
+                          <span>答卷数量</span>
+                          <button 
+                            className="sort-btn" 
+                            onClick={() => handleSort('responseCount')}
+                            title="排序"
+                          >
+                            {getSortIcon('responseCount')}
+                          </button>
+                        </div>
+                      </th>
+                    )}
+                    <th>
+                      <div className="th-with-sort">
+                        <span>创建时间</span>
+                        <button 
+                          className="sort-btn" 
+                          onClick={() => handleSort('createdAt')}
+                          title="排序"
+                        >
+                          {getSortIcon('createdAt')}
+                        </button>
+                      </div>
+                    </th>
+                    <th>
+                      <div className="th-with-sort">
+                        <span>最后修改</span>
+                        <button 
+                          className="sort-btn" 
+                          onClick={() => handleSort('updatedAt')}
+                          title="排序"
+                        >
+                          {getSortIcon('updatedAt')}
+                        </button>
+                      </div>
+                    </th>
                     <th>操作</th>
                   </tr>
                 </thead>
