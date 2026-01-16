@@ -12,8 +12,6 @@ const FormCreate = () => {
   const formId = searchParams.get('id'); // 获取编辑的表单 ID
   const isEditMode = !!formId;
 
-  const [formTitle, setFormTitle] = useState('');
-  const [formDescription, setFormDescription] = useState('');
   const [jsonInput, setJsonInput] = useState('');
   const [formData, setFormData] = useState(null);
   const [error, setError] = useState('');
@@ -21,9 +19,64 @@ const FormCreate = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingForm, setIsLoadingForm] = useState(false);
   const [showSaveAsDialog, setShowSaveAsDialog] = useState(false);
-  const [newFormTitle, setNewFormTitle] = useState('');
-  const [newFormDescription, setNewFormDescription] = useState('');
+  const [showExample, setShowExample] = useState(false);
   const navigate = useNavigate();
+
+  // 从 JSON 中提取表单标题和描述
+  const getFormTitleFromJson = () => {
+    if (!formData) return '';
+    const firstForm = Object.values(formData)[0];
+    return firstForm?.title || '';
+  };
+
+  const getFormDescriptionFromJson = () => {
+    if (!formData) return '';
+    const firstForm = Object.values(formData)[0];
+    return firstForm?.description || '';
+  };
+
+  // JSON 示例数据
+  const exampleJson = {
+    "form1": {
+      "title": "用户满意度调研",
+      "description": "本次调研仅用于优化服务，感谢配合",
+      "questions": [
+        {
+          "id": "q1",
+          "question": "您对本次服务的满意度？",
+          "options": [
+            { "id": 1, "text": "非常满意" },
+            { "id": 2, "text": "满意" },
+            { "id": 3, "text": "一般" },
+            { "id": 4, "text": "不满意" }
+          ]
+        },
+        {
+          "id": "q2",
+          "question": "您希望优化的功能？（可多选）",
+          "multioptions": [
+            { "id": 1, "text": "响应速度" },
+            { "id": 2, "text": "界面设计" },
+            { "id": 3, "text": "功能完整性" }
+          ]
+        },
+        {
+          "id": "q3",
+          "question": "您的年龄段是？",
+          "select": [
+            { "id": "A", "text": "18-25岁" },
+            { "id": "B", "text": "26-35岁" },
+            { "id": "C", "text": "36-45岁" }
+          ]
+        }
+      ]
+    }
+  };
+
+  // 切换示例显示
+  const toggleExample = () => {
+    setShowExample(!showExample);
+  };
 
   // 加载已有表单数据（编辑模式）
   useEffect(() => {
@@ -43,8 +96,6 @@ const FormCreate = () => {
 
       if (response.data.success) {
         const form = response.data.data;
-        setFormTitle(form.title);
-        setFormDescription(form.description || '');
         setFormData(form.jsonSchema);
         setJsonInput(JSON.stringify(form.jsonSchema, null, 2));
       } else {
@@ -84,7 +135,7 @@ const FormCreate = () => {
     }
   };
 
-  const generateFormUrl = (title) => {
+  const generateFormUrl = () => {
     // 生成唯一的表单 URL
     const timestamp = Date.now();
     const randomStr = Math.random().toString(36).substring(2, 8);
@@ -94,13 +145,17 @@ const FormCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formTitle.trim()) {
-      setError('请输入表单标题');
-      return;
-    }
-    
     if (!formData) {
       setError('请输入有效的 JSON 数据');
+      return;
+    }
+
+    // 从 JSON 中获取标题和描述
+    const formTitle = getFormTitleFromJson();
+    const formDescription = getFormDescriptionFromJson();
+
+    if (!formTitle.trim()) {
+      setError('JSON 配置中缺少表单标题（title 字段）');
       return;
     }
 
@@ -156,7 +211,7 @@ const FormCreate = () => {
           description: formDescription || '',
           jsonSchema: formData,
           createType: 'json',
-          url: generateFormUrl(formTitle),
+          url: generateFormUrl(),
           createUserId: userId,
         };
 
@@ -205,30 +260,29 @@ const FormCreate = () => {
       return;
     }
 
-    // 设置默认值
-    setNewFormTitle(formTitle + ' - 副本');
-    setNewFormDescription(formDescription);
     setShowSaveAsDialog(true);
   };
 
   // 关闭另存为对话框
   const handleCloseSaveAs = () => {
     setShowSaveAsDialog(false);
-    setNewFormTitle('');
-    setNewFormDescription('');
   };
 
   // 另存为新表单
   const handleSaveAsNewForm = async (e) => {
     e.preventDefault();
 
-    if (!newFormTitle.trim()) {
-      alert('请输入新表单标题');
+    if (!formData) {
+      alert('表单数据无效');
       return;
     }
 
-    if (!formData) {
-      alert('表单数据无效');
+    // 从 JSON 中获取标题和描述
+    const formTitle = getFormTitleFromJson();
+    const formDescription = getFormDescriptionFromJson();
+
+    if (!formTitle.trim()) {
+      alert('JSON 配置中缺少表单标题（title 字段）');
       return;
     }
 
@@ -243,13 +297,13 @@ const FormCreate = () => {
         return;
       }
 
-      // 创建新表单
+      // 创建新表单（另存为）
       const formPayload = {
-        title: newFormTitle,
-        description: newFormDescription || '',
+        title: formTitle + ' - 副本',
+        description: formDescription || '',
         jsonSchema: formData,
         createType: 'json',
-        url: generateFormUrl(newFormTitle),
+        url: generateFormUrl(),
         createUserId: userId,
       };
 
@@ -300,33 +354,40 @@ const FormCreate = () => {
       </header>
       <main className="form-create-main">
         <form onSubmit={handleSubmit} className="form-create-form">
-          <div className="form-basic-info">
-            <div className="form-group">
-              <label htmlFor="form-title">表单标题 *</label>
-              <input
-                type="text"
-                id="form-title"
-                value={formTitle}
-                onChange={(e) => setFormTitle(e.target.value)}
-                placeholder="请输入表单标题"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="form-description">表单描述</label>
-              <input
-                type="text"
-                id="form-description"
-                value={formDescription}
-                onChange={(e) => setFormDescription(e.target.value)}
-                placeholder="请输入表单描述（可选）"
-              />
-            </div>
-          </div>
-          
           <div className="form-columns">
             <div className="form-section left-column">
-              <h2>JSON 配置</h2>
+              <div className="section-header">
+                <h2>JSON 配置</h2>
+                <button 
+                  type="button" 
+                  className="example-toggle-button" 
+                  onClick={toggleExample}
+                  title={showExample ? "隐藏示例" : "显示示例"}
+                >
+                  {showExample ? '👁️ 隐藏示例' : '👁️‍🗨️ 显示示例'}
+                </button>
+              </div>
+              {showExample && (
+                <div className="example-box">
+                  <div className="example-header">
+                    <span className="example-title">📋 JSON 示例</span>
+                    <button
+                      type="button"
+                      className="copy-example-button"
+                      onClick={() => {
+                        const exampleText = JSON.stringify(exampleJson, null, 2);
+                        setJsonInput(exampleText);
+                        setFormData(exampleJson);
+                        setError('');
+                        setValidationErrors([]);
+                      }}
+                    >
+                      使用此示例
+                    </button>
+                  </div>
+                  <pre className="example-code">{JSON.stringify(exampleJson, null, 2)}</pre>
+                </div>
+              )}
               <div className="json-input-section">
                 <textarea
                   id="json-input"
@@ -470,52 +531,39 @@ const FormCreate = () => {
                 ✕
               </button>
             </div>
-            <form onSubmit={handleSaveAsNewForm} className="dialog-form">
-              <div className="dialog-body">
-                <div className="form-group">
-                  <label htmlFor="new-form-title">新表单标题 *</label>
-                  <input
-                    type="text"
-                    id="new-form-title"
-                    value={newFormTitle}
-                    onChange={(e) => setNewFormTitle(e.target.value)}
-                    placeholder="请输入新表单标题"
-                    required
-                    autoFocus
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="new-form-description">新表单描述</label>
-                  <input
-                    type="text"
-                    id="new-form-description"
-                    value={newFormDescription}
-                    onChange={(e) => setNewFormDescription(e.target.value)}
-                    placeholder="请输入新表单描述（可选）"
-                  />
-                </div>
+            <div className="dialog-body">
+              <div className="dialog-info">
+                <p>
+                  <strong>当前表单标题：</strong>
+                  {getFormTitleFromJson() || '（未设置）'}
+                </p>
+                <p>
+                  <strong>新表单标题：</strong>
+                  {getFormTitleFromJson() ? `${getFormTitleFromJson()} - 副本` : '（未设置）'}
+                </p>
                 <div className="dialog-hint">
-                  💡 将使用当前的表单配置创建一个新表单
+                  💡 将使用当前的表单配置创建一个新表单，标题自动添加"- 副本"后缀
                 </div>
               </div>
-              <div className="dialog-footer">
-                <button 
-                  type="button" 
-                  className="dialog-cancel-button" 
-                  onClick={handleCloseSaveAs}
-                  disabled={isLoading}
-                >
-                  取消
-                </button>
-                <button 
-                  type="submit" 
-                  className="dialog-confirm-button"
-                  disabled={isLoading}
-                >
-                  {isLoading ? '保存中...' : '保存为新表单'}
-                </button>
-              </div>
-            </form>
+            </div>
+            <div className="dialog-footer">
+              <button 
+                type="button" 
+                className="dialog-cancel-button" 
+                onClick={handleCloseSaveAs}
+                disabled={isLoading}
+              >
+                取消
+              </button>
+              <button 
+                type="button" 
+                className="dialog-confirm-button"
+                onClick={handleSaveAsNewForm}
+                disabled={isLoading}
+              >
+                {isLoading ? '保存中...' : '保存为新表单'}
+              </button>
+            </div>
           </div>
         </div>
       )}

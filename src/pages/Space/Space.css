@@ -1,4 +1,4 @@
-  .space-container {
+.space-container {
   min-height: 100vh;
   background-color: #FFFFFF;
 }
@@ -59,35 +59,6 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 30px 40px;
-}
-
-.space-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  border-bottom: 2px solid #E0E0E0;
-}
-
-.tab-button {
-  padding: 12px 24px;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: #757575;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: -2px;
-}
-
-.tab-button:hover {
-  color: #8BC34A;
-}
-
-.tab-button.active {
-  color: #8BC34A;
-  border-bottom-color: #8BC34A;
 }
 
 .space-toolbar {
@@ -299,11 +270,6 @@
   color: #4CAF50;
 }
 
-.status-deleted {
-  background-color: #FFEBEE;
-  color: #F44336;
-}
-
 .actions {
   display: flex;
   gap: 8px;
@@ -336,11 +302,6 @@
 .action-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
-}
-
-.star-btn.starred svg {
-  fill: #FFD700;
-  stroke: #FFD700;
 }
 
 .response-count {

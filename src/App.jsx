@@ -8,6 +8,12 @@ import FormFill from './pages/FormFill/FormFill';
 import FormDataView from './pages/FormDataView/FormDataView';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { isAuthenticated } from './utils/auth';
+// 示意页面
+import SpaceWithSidebar from '../example/SpaceWithSidebar';
+import ResultsQuery from '../example/ResultsQuery';
+import ExampleFormDataView from '../example/FormDataView';
+import DataPushConfig from '../example/DataPushConfig';
+import LogManager from '../example/LogManager';
 import './App.css';
 
 function App() {
@@ -50,6 +56,13 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          {/* 示意页面路由（无需登录） */}
+          <Route path="/example/space" element={<SpaceWithSidebar />} />
+          <Route path="/example/results" element={<ResultsQuery />} />
+          <Route path="/example/form-data" element={<ExampleFormDataView />} />
+          <Route path="/example/data-push" element={<DataPushConfig />} />
+          <Route path="/example/logs" element={<LogManager />} />
         </Routes>
       </div>
     </BrowserRouter>

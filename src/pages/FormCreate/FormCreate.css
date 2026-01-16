@@ -156,6 +156,89 @@
   color: #14171a;
 }
 
+/* 区域头部 */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* 示例切换按钮 */
+.example-toggle-button {
+  padding: 6px 12px;
+  background-color: transparent;
+  color: #8BC34A;
+  border: 1px solid #8BC34A;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.example-toggle-button:hover {
+  background-color: #F1F8E9;
+}
+
+/* 示例框 */
+.example-box {
+  background-color: #F1F8E9;
+  border: 1px solid #C5E1A5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.example-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.example-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #558B2F;
+}
+
+.copy-example-button {
+  padding: 6px 12px;
+  background-color: #8BC34A;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-example-button:hover {
+  background-color: #7CB342;
+}
+
+.example-code {
+  background-color: #FFFFFF;
+  border: 1px solid #C5E1A5;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #33691E;
+  overflow-x: auto;
+  margin: 0;
+  white-space: pre;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
 .json-input-section {
   display: flex;
   flex-direction: column;

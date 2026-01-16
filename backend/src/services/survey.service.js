@@ -1,39 +1,22 @@
 import { query } from '../config/database.js';
 
 /**
- * 获取所有表单（根据用户ID和类型）
+ * 获取所有表单（根据用户ID）
  * @param {string} userId - 用户ID
- * @param {string} type - 表单类型: 'all'(全部), 'starred'(星标), 'trash'(回收站)
  */
-export const getAllSurveys = async (userId, type = 'all') => {
+export const getAllSurveys = async (userId) => {
   let sql = `
     SELECT f.*, 
            COUNT(s."submissionId") as "responseCount"
     FROM "forms" f
     LEFT JOIN "submissions" s ON f."formId" = s."formId"
-    WHERE 1=1
+    WHERE f."deletedAt" IS NULL
   `;
   const params = [];
-  let paramIndex = 1;
-
-  // 根据类型筛选
-  if (type === 'trash') {
-    // 回收站：显示已删除的表单
-    sql += ` AND f."deletedAt" IS NOT NULL`;
-  } else {
-    // 非回收站：不显示已删除的表单
-    sql += ` AND f."deletedAt" IS NULL`;
-    
-    if (type === 'starred') {
-      // 星标问卷
-      sql += ` AND f."isStarred" = true`;
-    }
-  }
   
   if (userId) {
-    sql += ` AND f."createUserId" = $${paramIndex}`;
+    sql += ` AND f."createUserId" = $1`;
     params.push(userId);
-    paramIndex++;
   }
   
   sql += ` GROUP BY f."formId" ORDER BY f."createdAt" DESC`;
@@ -134,7 +117,7 @@ export const updateSurvey = async (id, surveyData) => {
 };
 
 /**
- * 删除表单（软删除 - 移入回收站）
+ * 删除表单（软删除）
  */
 export const deleteSurvey = async (id) => {
   // 检查表单是否存在
@@ -144,58 +127,6 @@ export const deleteSurvey = async (id) => {
     'UPDATE "forms" SET "deletedAt" = CURRENT_TIMESTAMP WHERE "formId" = $1',
     [id]
   );
-};
-
-/**
- * 永久删除表单（从回收站删除）
- */
-export const permanentDeleteSurvey = async (id) => {
-  // 检查表单是否在回收站
-  const result = await query(
-    'SELECT * FROM "forms" WHERE "formId" = $1 AND "deletedAt" IS NOT NULL',
-    [id]
-  );
-  
-  if (result.rows.length === 0) {
-    throw new Error('表单不在回收站中');
-  }
-  
-  await query('DELETE FROM "forms" WHERE "formId" = $1', [id]);
-};
-
-/**
- * 从回收站恢复表单
- */
-export const restoreSurvey = async (id) => {
-  // 检查表单是否在回收站
-  const result = await query(
-    'SELECT * FROM "forms" WHERE "formId" = $1 AND "deletedAt" IS NOT NULL',
-    [id]
-  );
-  
-  if (result.rows.length === 0) {
-    throw new Error('表单不在回收站中');
-  }
-  
-  await query(
-    'UPDATE "forms" SET "deletedAt" = NULL WHERE "formId" = $1',
-    [id]
-  );
-};
-
-/**
- * 切换表单星标状态
- */
-export const toggleStarSurvey = async (id) => {
-  // 检查表单是否存在
-  await getSurveyById(id);
-  
-  const result = await query(
-    'UPDATE "forms" SET "isStarred" = NOT "isStarred" WHERE "formId" = $1 RETURNING *',
-    [id]
-  );
-  
-  return result.rows[0];
 };
 
 /**

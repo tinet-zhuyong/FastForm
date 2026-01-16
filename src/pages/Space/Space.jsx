@@ -13,7 +13,6 @@ const Space = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState('all'); // 'all', 'starred', 'trash'
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null }); // 排序配置
   const itemsPerPage = 10;
 
@@ -27,7 +26,7 @@ const Space = () => {
       const userId = getUserId();
 
       const response = await axios.get(WEBAPI.getAllForms, {
-        params: { userId, type: activeTab },
+        params: { userId },
         timeout: API_CONFIG.timeout,
       });
 
@@ -46,7 +45,7 @@ const Space = () => {
 
   useEffect(() => {
     loadForms();
-  }, [activeTab]);
+  }, []);
 
   // 排序功能
   const handleSort = (key) => {
@@ -81,8 +80,8 @@ const Space = () => {
           bValue = parseInt(b.responseCount) || 0;
           break;
         case 'status':
-          // 状态排序：draft < active < deleted
-          const statusOrder = { draft: 1, active: 2, deleted: 3 };
+          // 状态排序：draft < active
+          const statusOrder = { draft: 1, active: 2 };
           aValue = statusOrder[a.status] || 0;
           bValue = statusOrder[b.status] || 0;
           break;
@@ -151,7 +150,6 @@ const Space = () => {
     const statusMap = {
       draft: { text: '草稿', className: 'status-draft' },
       active: { text: '已发布', className: 'status-active' },
-      deleted: { text: '已删除', className: 'status-deleted' },
     };
     const statusInfo = statusMap[status] || { text: status, className: '' };
     return <span className={`status-badge ${statusInfo.className}`}>{statusInfo.text}</span>;
@@ -194,14 +192,9 @@ const Space = () => {
     }
   };
 
-  // 删除表单（移入回收站）
+  // 删除表单（软删除）
   const handleDelete = async (form) => {
-    if (form.status === 'active') {
-      alert('已发布的表单不可直接删除，请先停用');
-      return;
-    }
-
-    if (!window.confirm(`确定要将表单"${form.title}"移入回收站吗？`)) {
+    if (!window.confirm(`确定要删除表单"${form.title}"吗？`)) {
       return;
     }
 
@@ -217,65 +210,6 @@ const Space = () => {
       }
     } catch (err) {
       alert(err.message || '删除失败');
-    }
-  };
-
-  // 永久删除表单
-  const handlePermanentDelete = async (form) => {
-    if (!window.confirm(`确定要永久删除表单"${form.title}"吗？此操作不可恢复！`)) {
-      return;
-    }
-
-    try {
-      const response = await axios.delete(WEBAPI.permanentDeleteForm(form.formId), {
-        timeout: API_CONFIG.timeout,
-      });
-
-      if (response.data.success) {
-        loadForms();
-      } else {
-        alert(response.data.error?.message || '永久删除失败');
-      }
-    } catch (err) {
-      alert(err.message || '永久删除失败');
-    }
-  };
-
-  // 恢复表单
-  const handleRestore = async (form) => {
-    try {
-      const response = await axios.put(
-        WEBAPI.restoreForm(form.formId),
-        {},
-        { timeout: API_CONFIG.timeout }
-      );
-
-      if (response.data.success) {
-        loadForms();
-      } else {
-        alert(response.data.error?.message || '恢复失败');
-      }
-    } catch (err) {
-      alert(err.message || '恢复失败');
-    }
-  };
-
-  // 切换星标
-  const handleToggleStar = async (form) => {
-    try {
-      const response = await axios.put(
-        WEBAPI.toggleStarForm(form.formId),
-        {},
-        { timeout: API_CONFIG.timeout }
-      );
-
-      if (response.data.success) {
-        loadForms();
-      } else {
-        alert(response.data.error?.message || '操作失败');
-      }
-    } catch (err) {
-      alert(err.message || '操作失败');
     }
   };
 
@@ -330,34 +264,9 @@ const Space = () => {
       </header>
 
       <main className="space-main">
-        <div className="space-tabs">
-          <button
-            className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
-            onClick={() => setActiveTab('all')}
-          >
-            全部问卷
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'starred' ? 'active' : ''}`}
-            onClick={() => setActiveTab('starred')}
-          >
-            ⭐ 星标问卷
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'trash' ? 'active' : ''}`}
-            onClick={() => setActiveTab('trash')}
-          >
-            🗑️ 回收站
-          </button>
-        </div>
-
         <div className="space-toolbar">
           <div className="toolbar-left">
-            <h2>
-              {activeTab === 'all' && '全部问卷'}
-              {activeTab === 'starred' && '星标问卷'}
-              {activeTab === 'trash' && '回收站'}
-            </h2>
+            <h2>我的问卷</h2>
             <span className="form-count">共 {filteredForms.length} 个表单</span>
           </div>
           <div className="toolbar-right">
@@ -368,11 +277,9 @@ const Space = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            {activeTab !== 'trash' && (
-              <button className="create-button" onClick={() => navigate('/form/create')}>
-                + 新建表单
-              </button>
-            )}
+            <button className="create-button" onClick={() => navigate('/form/create')}>
+              + 新建表单
+            </button>
           </div>
         </div>
 
@@ -400,34 +307,30 @@ const Space = () => {
                   <tr>
                     <th>表单标题</th>
                     <th>表单 ID</th>
-                    {activeTab !== 'trash' && (
-                      <th>
-                        <div className="th-with-sort">
-                          <span>状态</span>
-                          <button 
-                            className="sort-btn" 
-                            onClick={() => handleSort('status')}
-                            title="排序"
-                          >
-                            {getSortIcon('status')}
-                          </button>
-                        </div>
-                      </th>
-                    )}
-                    {activeTab !== 'trash' && (
-                      <th>
-                        <div className="th-with-sort">
-                          <span>答卷数量</span>
-                          <button 
-                            className="sort-btn" 
-                            onClick={() => handleSort('responseCount')}
-                            title="排序"
-                          >
-                            {getSortIcon('responseCount')}
-                          </button>
-                        </div>
-                      </th>
-                    )}
+                    <th>
+                      <div className="th-with-sort">
+                        <span>状态</span>
+                        <button 
+                          className="sort-btn" 
+                          onClick={() => handleSort('status')}
+                          title="排序"
+                        >
+                          {getSortIcon('status')}
+                        </button>
+                      </div>
+                    </th>
+                    <th>
+                      <div className="th-with-sort">
+                        <span>答卷数量</span>
+                        <button 
+                          className="sort-btn" 
+                          onClick={() => handleSort('responseCount')}
+                          title="排序"
+                        >
+                          {getSortIcon('responseCount')}
+                        </button>
+                      </div>
+                    </th>
                     <th>
                       <div className="th-with-sort">
                         <span>创建时间</span>
@@ -469,111 +372,70 @@ const Space = () => {
                       <td className="form-id">
                         <code>{form.formId.substring(0, 8)}...</code>
                       </td>
-                      {activeTab !== 'trash' && <td>{getStatusBadge(form.status)}</td>}
-                      {activeTab !== 'trash' && (
-                        <td className="response-count">
-                          <span className="count-badge">{form.responseCount || 0}</span>
-                        </td>
-                      )}
+                      <td>{getStatusBadge(form.status)}</td>
+                      <td className="response-count">
+                        <span className="count-badge">{form.responseCount || 0}</span>
+                      </td>
                       <td>{formatDate(form.createdAt)}</td>
                       <td>{formatDate(form.updatedAt)}</td>
                       <td className="actions">
-                        {activeTab === 'trash' ? (
-                          <>
-                            <button
-                              className="action-btn restore-btn"
-                              onClick={() => handleRestore(form)}
-                              title="恢复"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="23 4 23 10 17 10"></polyline>
-                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-                              </svg>
-                            </button>
-                            <button
-                              className="action-btn delete-btn"
-                              onClick={() => handlePermanentDelete(form)}
-                              title="永久删除"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                <line x1="10" y1="11" x2="10" y2="17"></line>
-                                <line x1="14" y1="11" x2="14" y2="17"></line>
-                              </svg>
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              className={`action-btn star-btn ${form.isStarred ? 'starred' : ''}`}
-                              onClick={() => handleToggleStar(form)}
-                              title={form.isStarred ? '取消星标' : '添加星标'}
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill={form.isStarred ? 'currentColor' : 'none'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                              </svg>
-                            </button>
-                            <button
-                              className="action-btn edit-btn"
-                              onClick={() => handleEdit(form)}
-                              title="编辑"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                              </svg>
-                            </button>
-                            <button
-                              className="action-btn data-btn"
-                              onClick={() => navigate(`/form/${form.formId}/data`)}
-                              title="查看数据"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <line x1="18" y1="20" x2="18" y2="10"></line>
-                                <line x1="12" y1="20" x2="12" y2="4"></line>
-                                <line x1="6" y1="20" x2="6" y2="14"></line>
-                              </svg>
-                            </button>
-                            <button
-                              className="action-btn link-btn"
-                              onClick={() => handleViewLink(form)}
-                              title="复制链接"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                              </svg>
-                            </button>
-                            <button
-                              className="action-btn publish-btn"
-                              onClick={() => handleTogglePublish(form)}
-                              title={form.status === 'active' ? '停用' : '发布'}
-                            >
-                              {form.status === 'active' ? (
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <rect x="6" y="4" width="4" height="16"></rect>
-                                  <rect x="14" y="4" width="4" height="16"></rect>
-                                </svg>
-                              ) : (
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                </svg>
-                              )}
-                            </button>
-                            <button
-                              className="action-btn delete-btn"
-                              onClick={() => handleDelete(form)}
-                              title="删除"
-                              disabled={form.status === 'active'}
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                              </svg>
-                            </button>
-                          </>
-                        )}
+                        <button
+                          className="action-btn edit-btn"
+                          onClick={() => handleEdit(form)}
+                          title="编辑"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                          </svg>
+                        </button>
+                        <button
+                          className="action-btn data-btn"
+                          onClick={() => navigate(`/form/${form.formId}/data`)}
+                          title="查看数据"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                          </svg>
+                        </button>
+                        <button
+                          className="action-btn link-btn"
+                          onClick={() => handleViewLink(form)}
+                          title="复制链接"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                          </svg>
+                        </button>
+                        <button
+                          className="action-btn publish-btn"
+                          onClick={() => handleTogglePublish(form)}
+                          title={form.status === 'active' ? '停用' : '发布'}
+                        >
+                          {form.status === 'active' ? (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <rect x="6" y="4" width="4" height="16"></rect>
+                              <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                          ) : (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                          )}
+                        </button>
+                        <button
+                          className="action-btn delete-btn"
+                          onClick={() => handleDelete(form)}
+                          title="删除"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          </svg>
+                        </button>
                       </td>
                     </tr>
                   ))}

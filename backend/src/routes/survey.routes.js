@@ -14,11 +14,4 @@ router.delete('/:id', surveyController.deleteSurvey);
 // 问卷统计
 router.get('/:id/analytics', surveyController.getSurveyAnalytics);
 
-// 星标功能
-router.put('/:id/star', surveyController.toggleStarSurvey);
-
-// 回收站功能
-router.put('/:id/restore', surveyController.restoreSurvey);
-router.delete('/:id/permanent', surveyController.permanentDeleteSurvey);
-
 export default router;

@@ -6,8 +6,7 @@ import * as surveyService from '../services/survey.service.js';
 export const getAllSurveys = async (req, res, next) => {
   try {
     const userId = req.user?.userId || req.query.userId;
-    const type = req.query.type || 'all'; // 'all', 'starred', 'trash'
-    const surveys = await surveyService.getAllSurveys(userId, type);
+    const surveys = await surveyService.getAllSurveys(userId);
     res.json({
       success: true,
       data: surveys
@@ -83,7 +82,7 @@ export const updateSurvey = async (req, res, next) => {
 };
 
 /**
- * 删除问卷
+ * 删除问卷（软删除）
  */
 export const deleteSurvey = async (req, res, next) => {
   try {
@@ -108,55 +107,6 @@ export const getSurveyAnalytics = async (req, res, next) => {
     res.json({
       success: true,
       data: analytics
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
- * 切换问卷星标状态
- */
-export const toggleStarSurvey = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const updatedSurvey = await surveyService.toggleStarSurvey(id);
-    res.json({
-      success: true,
-      data: updatedSurvey,
-      message: updatedSurvey.isStarred ? '已添加星标' : '已取消星标'
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
- * 永久删除问卷（从回收站删除）
- */
-export const permanentDeleteSurvey = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    await surveyService.permanentDeleteSurvey(id);
-    res.json({
-      success: true,
-      message: '问卷已永久删除'
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
- * 从回收站恢复问卷
- */
-export const restoreSurvey = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    await surveyService.restoreSurvey(id);
-    res.json({
-      success: true,
-      message: '问卷已恢复'
     });
   } catch (error) {
     next(error);
